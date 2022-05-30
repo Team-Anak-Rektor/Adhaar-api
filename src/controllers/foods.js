@@ -7,8 +7,6 @@ exports.getFoods = (req,res) => {
   console.log("hello");
 
   const name = req.body.name;
-  // console.log(req.body);
-  // const name = "gado-gado";
   let condition = name ? { foodName: { [Op.like]: `%${name}%` } } : null;
   Foods.findAll({
     where: condition,
