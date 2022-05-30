@@ -28,7 +28,7 @@ exports.getFoods = (req,res) => {
   })
   .then((foods) => {
     if (!foods) {
-      return res.status(404).json({ message: 'Recipe Not Found' });
+      return res.status(404).json({ message: 'Food Not Found' });
     }
 
     return res.status(200).json(foods);
