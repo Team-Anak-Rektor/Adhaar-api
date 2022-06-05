@@ -4,9 +4,8 @@ const Foods = db.foods;
 const Op = db.Sequelize.Op;
 
 exports.getFood = (req,res) => {
-  console.log("hello");
-
   const name = req.body.name;
+
   let condition = name ? { foodName: { [Op.like]: `%${name}%` } } : null;
   Foods.findOne({
     where: condition,
@@ -28,7 +27,7 @@ exports.getFood = (req,res) => {
     if (!foods) {
       return res.status(404).json({ message: 'Food Not Found' });
     }
-    const food = JSON.parse(JSON.stringify(foods));
+    const result = JSON.parse(JSON.stringify(foods));
     let newIngredients = [];
     let suitableFor = [];
     let vegan = true;
@@ -36,7 +35,7 @@ exports.getFood = (req,res) => {
     let glutenfree = true;
     let nondiary = true;
     
-    food.ingredients.forEach(element => {
+    result.ingredients.forEach(element => {
       const { ingredientName, notSuitableFor } = element
       const obj = {ingredientName};
       newIngredients.push(obj);
@@ -80,16 +79,14 @@ exports.getFood = (req,res) => {
       suitableFor.push({ "diet" : "Non Diary" })
     }
     
-    food.ingredients.length = 0;
-    food.ingredients = newIngredients;
-    food.suitableFor = suitableFor;
+    result.ingredients.length = 0;
+    result.ingredients = newIngredients;
+    result.suitableFor = suitableFor;
 
     return res.status(200).json({
       status: 'success',
       requestAt: Date.now(),
-      result: {
-        food
-      },
+      result
     });
   })
   .catch((error) => {
