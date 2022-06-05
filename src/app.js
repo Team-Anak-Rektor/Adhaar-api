@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors")
-const foodsRouter = require("./routes/foods");
+const foodsRouter = require("./routes/foods.route");
+const authRouter = require("./routes/auth.route");
 const bodyParser = require("body-parser");
+require("./middlewares/passport");
 
 const app = express();
 const PORT = process.env.PORT || 3000
@@ -9,11 +11,12 @@ const PORT = process.env.PORT || 3000
 
 app.use(cors({origin:'*'}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/v1/foods", foodsRouter);
+app.use("/api/v1/auth", authRouter);
 app.get('/', function(req, res) {
-    res.send('<h1>200</h1>');
+    res.send('hello word');
 });
 
 app.listen(PORT, () => {

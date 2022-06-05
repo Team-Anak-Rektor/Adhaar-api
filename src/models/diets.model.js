@@ -17,10 +17,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Diets.associate = (models) => {
-    Diets.belongsToMany(models.foods, {
-      through: "FoodsDiets",
+    Diets.belongsToMany(models.ingredients, {
+      through: "IngredientsDiets",
       foreignKey: 'dietId',
-      as: 'goodFoods'
+      as: 'allergy'
     });
   };
 

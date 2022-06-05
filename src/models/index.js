@@ -20,9 +20,10 @@ if (config.use_env_variable) {
   );
 }
 
-sequelize.authenticate().then(()=>{
-  console.log("connect")
-}).catch((err)=> console.log(err, "eror"))
+//testing connect
+// sequelize.authenticate().then(()=>{
+//   console.log("connect")
+// }).catch((err)=> console.log(err, "eror"))
 
 fs.readdirSync(__dirname)
   .filter((file) => {

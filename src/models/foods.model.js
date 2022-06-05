@@ -22,11 +22,6 @@ module.exports = function(sequelize, DataTypes) {
       foreignKey: 'foodId',
       as: 'ingredients'
     });
-    Foods.belongsToMany(models.diets, {
-      through: "FoodsDiets",
-      foreignKey: 'foodId',
-      as: 'suitableFor'
-    });
   };
 
   return Foods;

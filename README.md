@@ -5,5 +5,5 @@ https://documenter.getpostman.com/view/21171989/Uz5CLxt7
 - Express 4.17.1
 - Docker
 - Google Cloud Run
-- Google Artifact Registry
+- Google Container Registry
 - Google Cloud Build
