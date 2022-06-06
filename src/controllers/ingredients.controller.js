@@ -1,33 +1,31 @@
-const { ingredients, diets } = require('../models');
+const { diets } = require('../models');
 const db = require('../models');
-const Foods = db.foods;
+const Ingredients = db.ingredients;
 const Op = db.Sequelize.Op;
 
-exports.getFood = (req,res) => {
+exports.getIngredients = (req,res) => {
   const { name } = req.body;
+//   const newName = name.replace('"', '');
+//   const newName2 = newName.replace('"', '');
+  const arrName = name.split(", ");
 
-  let condition = name ? { foodName: { [Op.like]: `%${name}%` } } : null;
-  Foods.findOne({
+  let condition = arrName ? { ingredientName: { [Op.or]: arrName } } : null;
+  Ingredients.findAll({
     where: condition,
-    attributes: ['foodName'],
+    attributes: ['ingredientName'],
     include: {
-      model: ingredients,
-      as: 'ingredients',
-      attributes: ['ingredientName'],
-      through: {attributes: []},
-      include : {
         model: diets,
         as: 'notSuitableFor',
         attributes: ['diet'],
         through: {attributes: []}
-      }
     }
   })
-  .then((foods) => {
-    if (!foods) {
+  .then((ingredients) => {
+    if (!ingredients) {
       return res.status(404).json({ message: 'Food Not Found' });
     }
-    const result = JSON.parse(JSON.stringify(foods));
+    
+    const result = {};
     let newIngredients = [];
     let suitableFor = [];
     let vegan = true;
@@ -35,7 +33,7 @@ exports.getFood = (req,res) => {
     let glutenfree = true;
     let nondiary = true;
     
-    result.ingredients.forEach(element => {
+    ingredients.forEach(element => {
       const { ingredientName, notSuitableFor } = element
       const obj = {ingredientName};
       newIngredients.push(obj);
@@ -56,7 +54,7 @@ exports.getFood = (req,res) => {
         if (el.diet === "Non Diary"){
           nondiary = false;
         }
-        
+
       });
 
     });
@@ -77,8 +75,9 @@ exports.getFood = (req,res) => {
       suitableFor.push({ "diet" : "Non Diary" })
     }
     
-    result.ingredients.length = 0;
-    result.ingredients = newIngredients;
+    ingredients.length = 0;
+    ingredients = newIngredients;
+    result.ingredients = ingredients
     result.suitableFor = suitableFor;
 
     return res.status(200).json({
