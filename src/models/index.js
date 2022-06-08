@@ -20,7 +20,7 @@ if (config.use_env_variable) {
   );
 }
 
-//testing connect
+// // testing connect
 // sequelize.authenticate().then(()=>{
 //   console.log("connect")
 // }).catch((err)=> console.log(err, "eror"))
