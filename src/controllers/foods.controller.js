@@ -4,9 +4,9 @@ const Foods = db.foods;
 const Op = db.Sequelize.Op;
 
 exports.getFood = (req,res) => {
-  const { name } = req.body;
+  const { label } = req.body;
 
-  let condition = name ? { foodName: { [Op.like]: `%${name}%` } } : null;
+  let condition = label ? { foodName: { [Op.like]: `%${label}%` } } : null;
   Foods.findOne({
     where: condition,
     attributes: ['foodName'],

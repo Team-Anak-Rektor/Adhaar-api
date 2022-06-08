@@ -4,12 +4,12 @@ const Ingredients = db.ingredients;
 const Op = db.Sequelize.Op;
 
 exports.getIngredients = (req,res) => {
-  const { name } = req.body;
+  const { label } = req.body;
 //   const newName = name.replace('"', '');
 //   const newName2 = newName.replace('"', '');
-  const arrName = name.split(", ");
+  const arrLabel = label.split(", ");
 
-  let condition = arrName ? { ingredientName: { [Op.or]: arrName } } : null;
+  let condition = arrLabel ? { ingredientName: { [Op.or]: arrLabel } } : null;
   Ingredients.findAll({
     where: condition,
     attributes: ['ingredientName'],
