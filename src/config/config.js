@@ -24,7 +24,7 @@ module.exports = {
         host: DB_HOSTNAME,
         dialect: DB_DIALECT,
         dialectOptions: {
-            socketPath: DB_HOSTNAME
+            socketPath: "/cloudsql/adhaar-351813:us-central1:adhaar-sql"
         }
     },
 };
