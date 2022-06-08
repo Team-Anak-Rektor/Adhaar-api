@@ -8,5 +8,7 @@ COPY package*.json ./
 RUN npm install
 # Bundle app source
 COPY . .
+# Binding port
+EXPOSE 3000
 # Command to run our app
 CMD [ "npm", "start"]
