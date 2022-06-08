@@ -5,19 +5,32 @@ const path = require("path");
 const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/../config/config.js")[env];
+const dbConfig = require("../config/config");
 const db = {};
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
+if (process.env.NODE_ENV === "gcloud") {
   sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
+    process.env.DB_NAME,
+    process.env.DB_USERNAME,
+    process.env.DB_PASSWORD,
+    {
+      dialect: process.env.DB_DIALECT,
+      host: "/cloudsql/adhaar-351813:us-central1:adhaar-sql",
+    }
   );
+} else {
+  sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+    host: dbConfig.HOST,
+    dialect: dbConfig.dialect,
+
+    pool: {
+      max: dbConfig.pool.max,
+      min: dbConfig.pool.min,
+      acquire: dbConfig.pool.acquire,
+      idle: dbConfig.pool.idle,
+    },
+  });
 }
 
 // // testing connect
