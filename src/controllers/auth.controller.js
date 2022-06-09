@@ -17,13 +17,21 @@ exports.signup = async (req, res) => {
   );
 
   if (alreadyExistsUser) {
-    return res.status(409).json({ message: "User with email already exists!" });
+    return res.status(409).json({
+      status: 'failed',
+      requestAt: Date.now(),
+      message: "User with email already exists!"
+    });
   };
 
   const newUser = new User({ fullName, email, password });
   const savedUser = await newUser.save().catch((err) => {
     console.log("Error: ", err);
-    res.status(500).json({ error: "Cannot register user at the moment!" });
+    res.status(500).json({ 
+      status: 'failed',
+      requestAt: Date.now(),
+      error: "Cannot register user at the moment!"
+    });
   });
 
   if (savedUser) {
@@ -48,7 +56,11 @@ exports.signin = async (req, res) => {
   if (!userWithEmail) {
     return res
       .status(400)
-      .json({ message: "Email or password does not match!" });
+      .json({
+        status: 'failed',
+        requestAt: Date.now(),
+        message: "login failed"
+      });
 
   };
 
@@ -60,7 +72,11 @@ exports.signin = async (req, res) => {
   if (!passwordIsValid) {
     return res
       .status(400)
-      .json({ message: "Email or password does not match!" });
+      .json({
+        status: 'failed',
+        requestAt: Date.now(),
+        message: "login failed"
+      });
   };
 
   const jwtToken = jwt.sign(
@@ -68,9 +84,17 @@ exports.signin = async (req, res) => {
     process.env.JWT_SECRET
   );
 
+  const data = {
+    id : userWithEmail.id,
+    name : userWithEmail.fullName,
+    email : userWithEmail.email
+  }
+
   res.status(200).json({ 
     status: 'success',
-      requestAt: Date.now(),
-      message: "logged in successfully", token: jwtToken 
+    requestAt: Date.now(),
+    message: "logged in successfully",
+    token: jwtToken,
+    data
     });
 };
