@@ -12,11 +12,26 @@ let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
+  console.log(process.env.NODE_ENV)
   sequelize = new Sequelize(
     config.database,
     config.username,
     config.password,
-    config
+    {
+      dialect: 'mysql',
+      host: config.host,
+      pool: {
+          max: 5,
+          min: 0,
+          acquire: 30000,
+          idle: 10000
+      },
+      dialectOptions: {
+          socketPath: '/cloudsql/adhaar-351813:us-central1:adhaar-sql'
+      },
+      logging: false,
+      operatorsAliases: false
+  }
   );
 }
 
