@@ -36,9 +36,9 @@ if (config.use_env_variable) {
 }
 
 //testing
-sequelize.authenticate().then(()=>{
-  console.log("connect")
-}).catch((err)=> console.log(err, "eror"))
+// sequelize.authenticate().then(()=>{
+//   console.log("connect")
+// }).catch((err)=> console.log(err, "eror"))
 
 fs.readdirSync(__dirname)
   .filter((file) => {
