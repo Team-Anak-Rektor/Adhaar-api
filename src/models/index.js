@@ -1,39 +1,31 @@
 "use strict";
 
 const fs = require("fs");
+const { connect } = require("http2");
 const path = require("path");
 const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-const dbConfig = require("../config/config");
+const config = require(__dirname + "/../config/config.js")[env];
 const db = {};
 
 let sequelize;
-if (process.env.NODE_ENV === "gcloud") {
-  sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USERNAME,
-    process.env.DB_PASSWORD,
-    {
-      dialect: process.env.DB_DIALECT,
-      host: "/cloudsql/adhaar-351813:us-central1:adhaar-sql",
-    }
-  );
+if (config.use_env_variable) {
+  console.log("connect")
+  console.log(process.env.NODE_ENV)
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
-
-    pool: {
-      max: dbConfig.pool.max,
-      min: dbConfig.pool.min,
-      acquire: dbConfig.pool.acquire,
-      idle: dbConfig.pool.idle,
-    },
-  });
+  console.log("connect2")
+  console.log(process.env.NODE_ENV)
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config
+  );
 }
 
-// // testing connect
+//testing connect
 // sequelize.authenticate().then(()=>{
 //   console.log("connect")
 // }).catch((err)=> console.log(err, "eror"))
