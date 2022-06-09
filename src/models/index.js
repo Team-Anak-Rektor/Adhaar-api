@@ -19,7 +19,7 @@ if (config.use_env_variable) {
     config.password,
     {
       dialect: 'mysql',
-      host: config.host,
+      host: '/cloudsql/adhaar-351813:us-central1:adhaar-sql',
       pool: {
           max: 5,
           min: 0,
