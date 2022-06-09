@@ -4,31 +4,26 @@ const fs = require("fs");
 const path = require("path");
 const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
-const dbConfig = require("../config/config");
-const env = process.env.NODE_ENV || "production";
-const dbConfig = require(__dirname + "/../config/config.js")[env];
+const env = process.env.NODE_ENV || "development";
+const config = require(__dirname + "/../config/config.js")[env];
 const db = {};
 
 let sequelize;
-sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  dialect: 'mysql',
-  host: dbConfig.HOST,
-  pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-  },
-  dialectOptions: {
-      socketPath: "/cloudsql/adhaar-351813:us-central1:adhaar-sql"
-  },
-  logging: false,
-  operatorsAliases: false
-});
-//testing connect
-// sequelize.authenticate().then(()=>{
-//   console.log("connect")
-// }).catch((err)=> console.log(err, "eror"))
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config
+  );
+}
+
+//testing
+sequelize.authenticate().then(()=>{
+  console.log("connect")
+}).catch((err)=> console.log(err, "eror"))
 
 fs.readdirSync(__dirname)
   .filter((file) => {
