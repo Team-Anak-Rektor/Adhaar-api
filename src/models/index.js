@@ -5,11 +5,13 @@ const path = require("path");
 const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
 const dbConfig = require("../config/config");
+const env = process.env.NODE_ENV || "production";
+const dbConfig = require(__dirname + "/../config/config.js")[env];
 const db = {};
 
 let sequelize;
 sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  dialect: dbConfig.dialect,
+  dialect: 'mysql',
   host: dbConfig.HOST,
   pool: {
       max: 5,
