@@ -83,7 +83,7 @@ exports.getFood = (req,res) => {
 
     return res.status(200).json({
       status: 'success',
-      requestAt: Date.now(),
+      requestAt: new Date().toISOString(),
       result
     });
   })

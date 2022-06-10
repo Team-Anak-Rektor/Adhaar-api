@@ -19,7 +19,7 @@ exports.signup = async (req, res) => {
   if (alreadyExistsUser) {
     return res.status(409).json({
       status: 'failed',
-      requestAt: Date.now(),
+      requestAt: new Date().toISOString(),
       message: "User with email already exists!"
     });
   };
@@ -29,7 +29,7 @@ exports.signup = async (req, res) => {
     console.log("Error: ", err);
     res.status(500).json({ 
       status: 'failed',
-      requestAt: Date.now(),
+      requestAt: new Date().toISOString(),
       error: "Cannot register user at the moment!"
     });
   });
@@ -37,7 +37,7 @@ exports.signup = async (req, res) => {
   if (savedUser) {
     res.status(201).json({ 
       status: 'success',
-      requestAt: Date.now(),
+      requestAt: new Date().toISOString(),
       message: "User was registered successfully!" 
     });
   };
@@ -58,7 +58,7 @@ exports.signin = async (req, res) => {
       .status(400)
       .json({
         status: 'failed',
-        requestAt: Date.now(),
+        requestAt: new Date().toISOString(),
         message: "login failed"
       });
 
@@ -74,7 +74,7 @@ exports.signin = async (req, res) => {
       .status(400)
       .json({
         status: 'failed',
-        requestAt: Date.now(),
+        requestAt: new Date().toISOString(),
         message: "login failed"
       });
   };
@@ -92,7 +92,7 @@ exports.signin = async (req, res) => {
 
   res.status(200).json({ 
     status: 'success',
-    requestAt: Date.now(),
+    requestAt: new Date().toISOString(),
     message: "logged in successfully",
     token: jwtToken,
     data
