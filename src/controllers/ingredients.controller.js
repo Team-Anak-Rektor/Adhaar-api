@@ -4,11 +4,13 @@ const Ingredients = db.ingredients;
 const Op = db.Sequelize.Op;
 
 exports.getIngredients = (req,res) => {
-  const { label } = req.body;
-  const newLabel = label.replace('-', ' ');
+  const { label } = req.query;
+//   console.log(label)
+//   const newLabel = label.replace('-', ' ');
+//   console.log(newLabel)
 //   const newName = name.replace('"', '');
 //   const newName2 = newName.replace('"', '');
-  const arrLabel = newLabel.split("+");
+  const arrLabel = label.split("%");
 
   let condition = arrLabel ? { ingredientName: { [Op.or]: arrLabel } } : null;
   Ingredients.findAll({
@@ -22,7 +24,7 @@ exports.getIngredients = (req,res) => {
     }
   })
   .then((ingredients) => {
-    if (!ingredients.ingredientName) {
+    if (ingredients.length === 0) {
       return res.status(404).json({ message: 'Ingredients Not Found' });
     }
     
