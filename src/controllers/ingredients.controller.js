@@ -5,9 +5,10 @@ const Op = db.Sequelize.Op;
 
 exports.getIngredients = (req,res) => {
   const { label } = req.body;
+  const newLabel = label.replace('-', ' ');
 //   const newName = name.replace('"', '');
 //   const newName2 = newName.replace('"', '');
-  const arrLabel = label.split(", ");
+  const arrLabel = newLabel.split("+");
 
   let condition = arrLabel ? { ingredientName: { [Op.or]: arrLabel } } : null;
   Ingredients.findAll({
@@ -21,8 +22,8 @@ exports.getIngredients = (req,res) => {
     }
   })
   .then((ingredients) => {
-    if (!ingredients) {
-      return res.status(404).json({ message: 'Food Not Found' });
+    if (!ingredients.ingredientName) {
+      return res.status(404).json({ message: 'Ingredients Not Found' });
     }
     
     const result = {};

@@ -3,6 +3,6 @@ const passport = require("passport");
 const router = express.Router();
 const foodsController = require("../controllers/foods.controller");
 
-router.get('/', passport.authenticate("jwt", { session: false }), foodsController.getFood);
+router.get('/json', passport.authenticate("jwt", { session: false }), foodsController.getFood);
 
 module.exports = router;
