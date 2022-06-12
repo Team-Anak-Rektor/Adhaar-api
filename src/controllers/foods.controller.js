@@ -75,11 +75,11 @@ exports.getFood = (req,res) => {
     }
 
     if (nondiary == true) {
-      suitableFor.push({ "diet" : "Non Diary" })
+      suitableFor.push({ "diet" : "Non Dairy" })
     }
 
     if (suitableFor.length === 0) {
-      suitableFor.push({ "diet" : "This food isn't suitable for Vegan,Vegetarian, Gluten Free, and Non-diary"})
+      suitableFor.push({ "diet" : "This food isn't suitable for Vegan,Vegetarian, Gluten Free, and Non-dairy"})
     }
     
     result.ingredients.length = 0;
