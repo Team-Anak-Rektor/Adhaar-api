@@ -6,6 +6,7 @@ const Op = db.Sequelize.Op;
 exports.getFood = (req,res) => {
   const { label } = req.query;
 
+
   let condition = label ? { foodName: { [Op.like]: `%${label}%` } } : null;
   Foods.findOne({
     where: condition,
@@ -75,6 +76,10 @@ exports.getFood = (req,res) => {
 
     if (nondiary == true) {
       suitableFor.push({ "diet" : "Non Diary" })
+    }
+
+    if (suitableFor.length === 0) {
+      suitableFor.push({ "diet" : "This food isn't suitable for Vegan,Vegetarian, Gluten Free, and Non-diary"})
     }
     
     result.ingredients.length = 0;
